@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {
   CreateOrderRequest,
   CreateOrderResponse,
   CancelOrderRequest,
   CancelOrderResponse,
   OpenOrderResponse,
-  OrderHistoryResponse
+  OrderHistoryResponse,
 } from "../types/types";
 
 const jupiterApi = axios.create({
@@ -15,72 +15,62 @@ const jupiterApi = axios.create({
   },
 });
 
-export async function createOrderApi(
-  data: CreateOrderRequest
-): Promise<CreateOrderResponse> {
+async function handleApiRequest<T>(
+  apiCall: () => Promise<AxiosResponse<T>>
+): Promise<T> {
   try {
-    const response = await jupiterApi.post<CreateOrderResponse>("/createOrder", data);
-    return response.data;
+    const { data } = await apiCall();
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(
-        `Jupiter API error: ${error.response?.data || error.message}`
+        `Jupiter API error: ${
+          error.response?.data
+            ? JSON.stringify(error.response.data)
+            : error.message
+        }`
       );
     }
     throw error;
   }
 }
 
-export async function getOpenOrdersApi(walletAddress: string): Promise<OpenOrderResponse[]> {
-  try {
-    const response = await jupiterApi.get<OpenOrderResponse[]>(`/openOrders`, {
-      params: { wallet: walletAddress }
-    });
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(
-        `Jupiter API error: ${error.response?.data || error.message}`
-      );
-    }
-    throw error;
-  }
+export async function createOrderApi(
+  data: CreateOrderRequest
+): Promise<CreateOrderResponse> {
+  return handleApiRequest(async () =>
+    jupiterApi.post<CreateOrderResponse>("/createOrder", data)
+  );
+}
+
+export async function getOpenOrdersApi(
+  walletAddress: string
+): Promise<OpenOrderResponse[]> {
+  return handleApiRequest(async () =>
+    jupiterApi.get<OpenOrderResponse[]>(`/openOrders`, {
+      params: { wallet: walletAddress },
+    })
+  );
 }
 
 export async function cancelOrdersApi(
   data: CancelOrderRequest
 ): Promise<CancelOrderResponse> {
-  try {
-    const response = await jupiterApi.post<CancelOrderResponse>("/cancelOrders", data);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(
-        `Jupiter API error: ${error.response?.data || error.message}`
-      );
-    }
-    throw error;
-  }
+  return handleApiRequest(async () =>
+    jupiterApi.post<CancelOrderResponse>("/cancelOrders", data)
+  );
 }
 
 export async function getOrderHistoryApi(
   walletAddress: string,
   page: number = 1
 ): Promise<OrderHistoryResponse> {
-  try {
-    const response = await jupiterApi.get<OrderHistoryResponse>(`/orderHistory`, {
+  return handleApiRequest(async () =>
+    jupiterApi.get<OrderHistoryResponse>(`/orderHistory`, {
       params: {
         wallet: walletAddress,
-        page
-      }
-    });
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(
-        `Jupiter API error: ${error.response?.data || error.message}`
-      );
-    }
-    throw error;
-  }
+        page,
+      },
+    })
+  );
 }
