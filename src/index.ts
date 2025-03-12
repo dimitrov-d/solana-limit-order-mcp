@@ -2,37 +2,38 @@ import { Connection, Keypair } from "@solana/web3.js";
 import bs58 from "bs58";
 import "dotenv/config";
 import { getOpenOrders } from "./actions/getOpenOrders";
-import { cancelOrders } from "./actions/cancelOrder";
+import { cancelOrders } from "./actions/cancelOrders";
 import { getOrderHistory } from "./actions/getOrderHistory";
-import { createAndSendLimitOrder } from "./actions/createLimitOrder";
-
-const RPC_URL = process.env.RPC_URL!;
+import { createLimitOrder } from "./actions/createLimitOrder";
 
 async function main() {
-  const connection = new Connection(RPC_URL, "confirmed");
+  const connection = new Connection(process.env.SOLANA_RPC_URL!, "confirmed");
   const wallet = Keypair.fromSecretKey(
     bs58.decode(process.env.SOLANA_PRIVATE_KEY!)
   );
 
   try {
     console.log("Attempting to create and send limit order...");
-    const { signature, order } = await createAndSendLimitOrder(
+    const { signature, order, success, error } = await createLimitOrder(
       connection,
       wallet
     );
-    console.log("Order created and sent successfully:");
-    console.log("- Order ID:", order);
-    console.log("- Transaction:", signature);
-    console.log("- Solscan URL:", `https://solscan.io/tx/${signature}/`);
+    if (success) {
+      console.log("Order created and sent successfully:");
+      console.log("- Order ID:", order);
+      console.log("- Transaction:", signature);
+      console.log("- Solscan URL:", `https://solscan.io/tx/${signature}/`);
+    } else {
+      console.error("Order creation failed:", error);
+    }
 
-    // Example usage of new functions
     console.log("\nFetching open orders...");
-    const openOrders = await getOpenOrders(wallet);
-    console.log("Open Orders:", openOrders);
+    const { orders } = await getOpenOrders(wallet);
+    console.log("Open Orders:", orders);
 
-    if (openOrders.length > 0) {
+    if (orders.length > 0) {
       console.log("\nCanceling first open order...");
-      const orderToCancel = [openOrders[0].publicKey];
+      const orderToCancel = [orders[0].publicKey];
       const cancelSignatures = await cancelOrders(
         connection,
         wallet,

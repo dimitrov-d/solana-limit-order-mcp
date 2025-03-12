@@ -1,19 +1,18 @@
 import { Keypair } from "@solana/web3.js";
 import { OpenOrderResponse } from "../types/types";
+import { getOpenOrdersApi } from "../common/jupiterApi";
 
-export async function getOpenOrders(wallet: Keypair): Promise<OpenOrderResponse[]> {
+export async function getOpenOrders(wallet: Keypair): Promise<{
+  orders: OpenOrderResponse[];
+  success: boolean;
+  error?: string;
+}> {
   try {
-    const response = await fetch(
-      `https://api.jup.ag/limit/v2/openOrders?wallet=${wallet.publicKey.toString()}`
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return await response.json();
+    const orders = await getOpenOrdersApi(wallet.publicKey.toString());
+    return { orders, success: true };
   } catch (error) {
-    console.error("Error fetching open orders:", error);
-    throw error;
+    const errorMessage = `Error fetching open orders: ${error}`;
+    console.error(errorMessage);
+    return { orders: [], success: false, error: errorMessage };
   }
 }

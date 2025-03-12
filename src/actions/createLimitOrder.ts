@@ -1,14 +1,24 @@
-import { Connection, VersionedTransaction, Keypair } from "@solana/web3.js";
-import { CreateOrderRequest, CreateOrderResponse } from "../types/types";
+import { Connection, Keypair } from "@solana/web3.js";
+import { CreateOrderRequest } from "../types/types";
+import { createOrderApi } from "../common/jupiterApi";
+import {
+  deserializeTransaction,
+  signAndSendTransaction,
+} from "../common/transactions";
 
 const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 const SOL_MINT = "So11111111111111111111111111111111111111112";
 
-export async function createAndSendLimitOrder(
+export async function createLimitOrder(
   connection: Connection,
   wallet: Keypair
-): Promise<{ signature: string; order: string }> {
-  const inputAmount = "5000000";
+): Promise<{
+  signature: string;
+  order: string;
+  success: boolean;
+  error?: string;
+}> {
+  const inputAmount = "5500000";
   const outputAmount = "50000000";
 
   const orderRequest: CreateOrderRequest = {
@@ -24,40 +34,18 @@ export async function createAndSendLimitOrder(
   };
 
   try {
-    const response = await fetch("https://api.jup.ag/limit/v2/createOrder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderRequest),
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! status: ${
-          response.status
-        }, response: ${await response.text()}`
-      );
-    }
-
-    const data: CreateOrderResponse = await response.json();
-
-    const transaction = VersionedTransaction.deserialize(
-      Buffer.from(data.tx, "base64")
+    const data = await createOrderApi(orderRequest);
+    const transaction = deserializeTransaction(data.tx);
+    const signature = await signAndSendTransaction(
+      connection,
+      transaction,
+      wallet
     );
 
-    transaction.sign([wallet]);
-
-    console.log("Sending transaction...");
-    const transactionBinary = transaction.serialize();
-    const signature = await connection.sendRawTransaction(transactionBinary, {
-      maxRetries: 2,
-      skipPreflight: true,
-    });
-
-    return { signature, order: data.order };
+    return { signature, order: data.order, success: true };
   } catch (error) {
-    console.error("Error creating and sending limit order:", error);
-    throw error;
+    const errorMessage = `Error creating and sending limit order: ${error}`;
+    console.error(errorMessage);
+    return { signature: "", order: "", success: false, error: errorMessage };
   }
 }
