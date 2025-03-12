@@ -9,7 +9,7 @@ export interface CreateOrderRequest {
     expiredAt?: string;
     feeBps?: string;
   };
-  computeUnitPrice?: string | "auto";
+  computeUnitPrice?: string | 'auto';
   referral?: string;
   wrapAndUnwrapSol?: boolean;
 }
@@ -47,7 +47,7 @@ export interface OpenOrderResponse {
 
 export interface CancelOrderRequest {
   maker: string;
-  computeUnitPrice?: string | "auto";
+  computeUnitPrice?: string | 'auto';
   orders?: string[];
 }
 
@@ -74,7 +74,7 @@ export interface OrderHistoryItem {
   expiredAt: string | null;
   createdAt: string;
   updatedAt: string;
-  status: "Open" | "Completed" | "Cancelled";
+  status: 'Open' | 'Completed' | 'Cancelled';
   openTx: string;
   closeTx: string;
   programVersion: string;
