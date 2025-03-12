@@ -4,7 +4,7 @@
   "description": "Jupiter Protocol Limit Order MCP Server",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "@solana/web3.js": "^1.98.0",
@@ -19,6 +19,7 @@
     "@types/node": "^22.13.10",
     "dotenv": "^16.4.7",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }
 }
