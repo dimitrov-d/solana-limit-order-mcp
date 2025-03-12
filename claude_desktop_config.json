@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "solana-mcp": {
+    "solana-limit-order-mcp": {
       "command": "tsx",
       "args": ["/full/path/to/index.ts"],
       "env": {
