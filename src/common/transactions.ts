@@ -1,4 +1,4 @@
-import { Connection, Keypair, VersionedTransaction } from "@solana/web3.js";
+import { Connection, Keypair, VersionedTransaction } from '@solana/web3.js';
 
 interface SendTransactionOptions {
   maxRetries?: number;
@@ -47,5 +47,5 @@ export async function signAndSendTransactions(
 }
 
 export function deserializeTransaction(txBase64: string): VersionedTransaction {
-  return VersionedTransaction.deserialize(Buffer.from(txBase64, "base64"));
+  return VersionedTransaction.deserialize(Buffer.from(txBase64, 'base64'));
 }

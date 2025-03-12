@@ -1,7 +1,7 @@
 {
-  "name": "jup-limit",
+  "name": "solana-limit-order-mcp",
   "version": "1.0.0",
-  "description": "Jupiter Protocol Limit Order MPC",
+  "description": "Jupiter Protocol Limit Order MCP Server",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts"

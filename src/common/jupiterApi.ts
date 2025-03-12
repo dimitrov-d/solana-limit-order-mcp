@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from 'axios';
 import {
   CancelOrderRequest,
   CancelOrderResponse,
@@ -6,12 +6,12 @@ import {
   CreateOrderResponse,
   OpenOrderResponse,
   OrderHistoryResponse,
-} from "../types/types";
+} from '../types/types';
 
 const jupiterApi = axios.create({
-  baseURL: "https://api.jup.ag/limit/v2",
+  baseURL: 'https://api.jup.ag/limit/v2',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
@@ -39,7 +39,7 @@ export async function createOrderApi(
   data: CreateOrderRequest,
 ): Promise<CreateOrderResponse> {
   return handleApiRequest(async () =>
-    jupiterApi.post<CreateOrderResponse>("/createOrder", data),
+    jupiterApi.post<CreateOrderResponse>('/createOrder', data),
   );
 }
 
@@ -47,7 +47,7 @@ export async function getOpenOrdersApi(
   walletAddress: string,
 ): Promise<OpenOrderResponse[]> {
   return handleApiRequest(async () =>
-    jupiterApi.get<OpenOrderResponse[]>("/openOrders", {
+    jupiterApi.get<OpenOrderResponse[]>('/openOrders', {
       params: { wallet: walletAddress },
     }),
   );
@@ -57,7 +57,7 @@ export async function cancelOrdersApi(
   data: CancelOrderRequest,
 ): Promise<CancelOrderResponse> {
   return handleApiRequest(async () =>
-    jupiterApi.post<CancelOrderResponse>("/cancelOrders", data),
+    jupiterApi.post<CancelOrderResponse>('/cancelOrders', data),
   );
 }
 
@@ -66,7 +66,7 @@ export async function getOrderHistoryApi(
   page: number = 1,
 ): Promise<OrderHistoryResponse> {
   return handleApiRequest(async () =>
-    jupiterApi.get<OrderHistoryResponse>("/orderHistory", {
+    jupiterApi.get<OrderHistoryResponse>('/orderHistory', {
       params: {
         wallet: walletAddress,
         page,

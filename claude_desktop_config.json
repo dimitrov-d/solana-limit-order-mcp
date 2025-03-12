@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "solana-mcp": {
+      "command": "tsx",
+      "args": ["/full/path/to/index.ts"],
+      "env": {
+        "SOLANA_RPC_URL": "<SOLANA_RPC_URL>",
+        "SOLANA_PRIVATE_KEY": "<SOLANA_PRIVATE_KEY>"
+      }
+    }
+  }
+}

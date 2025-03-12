@@ -34,7 +34,7 @@ const fetchPriceAction: Action = {
       .string()
       .describe('The mint address of the token to fetch the price for'),
   }),
-  handler: async (agent: SolanaAgentKit, input: Record<string, any>) => {
+  handler: async (_agent: SolanaAgentKit, input: Record<string, any>) => {
     try {
       const tokenId = new PublicKey(input.tokenAddress);
       const response = await axios.get(
