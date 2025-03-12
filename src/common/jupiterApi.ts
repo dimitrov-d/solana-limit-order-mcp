@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import {
-  CreateOrderRequest,
-  CreateOrderResponse,
   CancelOrderRequest,
   CancelOrderResponse,
+  CreateOrderRequest,
+  CreateOrderResponse,
   OpenOrderResponse,
   OrderHistoryResponse,
 } from "../types/types";
@@ -16,7 +16,7 @@ const jupiterApi = axios.create({
 });
 
 async function handleApiRequest<T>(
-  apiCall: () => Promise<AxiosResponse<T>>
+  apiCall: () => Promise<AxiosResponse<T>>,
 ): Promise<T> {
   try {
     const { data } = await apiCall();
@@ -28,7 +28,7 @@ async function handleApiRequest<T>(
           error.response?.data
             ? JSON.stringify(error.response.data)
             : error.message
-        }`
+        }`,
       );
     }
     throw error;
@@ -36,41 +36,41 @@ async function handleApiRequest<T>(
 }
 
 export async function createOrderApi(
-  data: CreateOrderRequest
+  data: CreateOrderRequest,
 ): Promise<CreateOrderResponse> {
   return handleApiRequest(async () =>
-    jupiterApi.post<CreateOrderResponse>("/createOrder", data)
+    jupiterApi.post<CreateOrderResponse>("/createOrder", data),
   );
 }
 
 export async function getOpenOrdersApi(
-  walletAddress: string
+  walletAddress: string,
 ): Promise<OpenOrderResponse[]> {
   return handleApiRequest(async () =>
-    jupiterApi.get<OpenOrderResponse[]>(`/openOrders`, {
+    jupiterApi.get<OpenOrderResponse[]>("/openOrders", {
       params: { wallet: walletAddress },
-    })
+    }),
   );
 }
 
 export async function cancelOrdersApi(
-  data: CancelOrderRequest
+  data: CancelOrderRequest,
 ): Promise<CancelOrderResponse> {
   return handleApiRequest(async () =>
-    jupiterApi.post<CancelOrderResponse>("/cancelOrders", data)
+    jupiterApi.post<CancelOrderResponse>("/cancelOrders", data),
   );
 }
 
 export async function getOrderHistoryApi(
   walletAddress: string,
-  page: number = 1
+  page: number = 1,
 ): Promise<OrderHistoryResponse> {
   return handleApiRequest(async () =>
-    jupiterApi.get<OrderHistoryResponse>(`/orderHistory`, {
+    jupiterApi.get<OrderHistoryResponse>("/orderHistory", {
       params: {
         wallet: walletAddress,
         page,
       },
-    })
+    }),
   );
 }

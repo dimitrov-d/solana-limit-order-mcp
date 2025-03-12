@@ -1,17 +1,17 @@
 import { Connection, Keypair } from "@solana/web3.js";
-import { CreateOrderRequest } from "../types/types";
 import { createOrderApi } from "../common/jupiterApi";
 import {
   deserializeTransaction,
   signAndSendTransaction,
 } from "../common/transactions";
+import { CreateOrderRequest } from "../types/types";
 
 const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 const SOL_MINT = "So11111111111111111111111111111111111111112";
 
 export async function createLimitOrder(
   connection: Connection,
-  wallet: Keypair
+  wallet: Keypair,
 ): Promise<{
   signature: string;
   order: string;
@@ -39,7 +39,7 @@ export async function createLimitOrder(
     const signature = await signAndSendTransaction(
       connection,
       transaction,
-      wallet
+      wallet,
     );
 
     return { signature, order: data.order, success: true };

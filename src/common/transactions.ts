@@ -1,4 +1,4 @@
-import { Connection, VersionedTransaction, Keypair } from "@solana/web3.js";
+import { Connection, Keypair, VersionedTransaction } from "@solana/web3.js";
 
 interface SendTransactionOptions {
   maxRetries?: number;
@@ -14,7 +14,7 @@ export async function signAndSendTransaction(
   connection: Connection,
   transaction: VersionedTransaction,
   signer: Keypair,
-  options: SendTransactionOptions = DEFAULT_SEND_OPTIONS
+  options: SendTransactionOptions = DEFAULT_SEND_OPTIONS,
 ): Promise<string> {
   transaction.sign([signer]);
   const transactionBinary = transaction.serialize();
@@ -29,7 +29,7 @@ export async function signAndSendTransactions(
   connection: Connection,
   transactions: VersionedTransaction[],
   signer: Keypair,
-  options: SendTransactionOptions = DEFAULT_SEND_OPTIONS
+  options: SendTransactionOptions = DEFAULT_SEND_OPTIONS,
 ): Promise<string[]> {
   const signatures: string[] = [];
 
@@ -38,7 +38,7 @@ export async function signAndSendTransactions(
       connection,
       transaction,
       signer,
-      options
+      options,
     );
     signatures.push(signature);
   }

@@ -1,10 +1,10 @@
 import { Keypair } from "@solana/web3.js";
-import { OrderHistoryResponse } from "../types/types";
 import { getOrderHistoryApi } from "../common/jupiterApi";
+import { OrderHistoryResponse } from "../types/types";
 
 export async function getOrderHistory(
   wallet: Keypair,
-  page: number = 1
+  page: number = 1,
 ): Promise<{
   history: OrderHistoryResponse | null;
   success: boolean;

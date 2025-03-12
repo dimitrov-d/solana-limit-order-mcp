@@ -1,22 +1,22 @@
 import { Connection, Keypair } from "@solana/web3.js";
 import bs58 from "bs58";
 import "dotenv/config";
-import { getOpenOrders } from "./actions/getOpenOrders";
 import { cancelOrders } from "./actions/cancelOrders";
-import { getOrderHistory } from "./actions/getOrderHistory";
 import { createLimitOrder } from "./actions/createLimitOrder";
+import { getOpenOrders } from "./actions/getOpenOrders";
+import { getOrderHistory } from "./actions/getOrderHistory";
 
 async function main() {
   const connection = new Connection(process.env.SOLANA_RPC_URL!, "confirmed");
   const wallet = Keypair.fromSecretKey(
-    bs58.decode(process.env.SOLANA_PRIVATE_KEY!)
+    bs58.decode(process.env.SOLANA_PRIVATE_KEY!),
   );
 
   try {
     console.log("Attempting to create and send limit order...");
     const { signature, order, success, error } = await createLimitOrder(
       connection,
-      wallet
+      wallet,
     );
     if (success) {
       console.log("Order created and sent successfully:");
@@ -37,7 +37,7 @@ async function main() {
       const cancelSignatures = await cancelOrders(
         connection,
         wallet,
-        orderToCancel
+        orderToCancel,
       );
       console.log("Cancel transaction signatures:", cancelSignatures);
     }

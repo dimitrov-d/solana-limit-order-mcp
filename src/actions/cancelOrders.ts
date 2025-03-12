@@ -1,15 +1,15 @@
 import { Connection, Keypair } from "@solana/web3.js";
-import { CancelOrderRequest } from "../types/types";
 import { cancelOrdersApi } from "../common/jupiterApi";
 import {
   deserializeTransaction,
   signAndSendTransactions,
 } from "../common/transactions";
+import { CancelOrderRequest } from "../types/types";
 
 export async function cancelOrders(
   connection: Connection,
   wallet: Keypair,
-  orderPubkeys?: string[]
+  orderPubkeys?: string[],
 ): Promise<{
   signatures: string[];
   success: boolean;
@@ -24,13 +24,13 @@ export async function cancelOrders(
 
     const data = await cancelOrdersApi(cancelRequest);
     const transactions = data.txs.map((tx: string) =>
-      deserializeTransaction(tx)
+      deserializeTransaction(tx),
     );
 
     const signatures = await signAndSendTransactions(
       connection,
       transactions,
-      wallet
+      wallet,
     );
 
     return { signatures, success: true };

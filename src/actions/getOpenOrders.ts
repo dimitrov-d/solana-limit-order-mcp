@@ -1,6 +1,6 @@
 import { Keypair } from "@solana/web3.js";
-import { OpenOrderResponse } from "../types/types";
 import { getOpenOrdersApi } from "../common/jupiterApi";
+import { OpenOrderResponse } from "../types/types";
 
 export async function getOpenOrders(wallet: Keypair): Promise<{
   orders: OpenOrderResponse[];
