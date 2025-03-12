@@ -3,6 +3,9 @@ import 'dotenv/config';
 import { ACTIONS, SolanaAgentKit, startMcpServer } from 'solana-agent-kit';
 import { createLimitOrder } from './actions/createLimitOrder';
 import fetchPrice from './actions/fetchPrice';
+import { getOpenOrders } from './actions/getOpenOrders';
+import { getOrderHistory } from './actions/getOrderHistory';
+import { cancelOrders } from './actions/cancelOrders';
 
 async function main() {
   validateEnvironment();
@@ -16,6 +19,9 @@ async function main() {
   const mcp_actions = {
     // Limit Order Actions
     CREATE_LIMIT_ORDER: createLimitOrder,
+    GET_OPEN_ORDERS: getOpenOrders,
+    GET_ORDER_HISTORY: getOrderHistory,
+    CANCEL_ORDERS: cancelOrders,
 
     // Solana Agent Kit Actions
     GET_PRICE: fetchPrice,

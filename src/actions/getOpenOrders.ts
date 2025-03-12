@@ -3,20 +3,20 @@ import { getOpenOrdersApi } from '../common/jupiterApi';
 import { Action, SolanaAgentKit } from 'solana-agent-kit';
 
 export const getOpenOrders: Action = {
-  name: 'getOpenOrders',
+  name: 'GET_OPEN_ORDERS',
   similes: ['fetch open orders', 'get limit orders', 'retrieve open orders'],
   description: 'Fetches the open limit orders for a given wallet.',
   examples: [
     [
       {
         input: {
-          walletPublicKey: 'CmwPTro4ogHPhuG9Dozx1X7KiATNudF1rkem3BQmuPn7',
+          walletPublicKey: 'CmwPTro4ogHP...muPn7',
         },
         output: {
           orders: [
             {
-              userPubkey: 'CmwPTro4ogHPhuG9Dozx1X7KiATNudF1rkem3BQmuPn7',
-              orderKey: 'GgMvwcfMzP9AmfwZuMzNienXGBhQa8dksihZvTmyBZYM',
+              userPubkey: 'CmwPTro4ogHP...muPn7',
+              orderKey: 'GgMvwcfM...vTmyBZYM',
               inputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
               outputMint: 'So11111111111111111111111111111111111111112',
               makingAmount: '10000000',
@@ -28,7 +28,7 @@ export const getOpenOrders: Action = {
               updatedAt: '2023-10-02T00:00:00Z',
               status: 'Open',
               openTx:
-                'https://solscan.io/tx/2431GhdNNd3bZ1pH1anFFwWgPuBrt3k9h6Wgezcjn9mpYAbwRfTeyHNmb77BBCSk34SW2iFH8AXzrPwu17zQARjr',
+                'https://solscan.io/tx/2431GhdanFFwWg...77BBCSk34SW2iFHwu17zQARjr',
               closeTx: '',
               programVersion: '1.0',
               trades: [

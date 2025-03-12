@@ -7,7 +7,7 @@ import {
 } from '../common/transactions';
 import { CreateOrderRequest } from '../types/types';
 
-export const createLimitOrderSchema = z.object({
+const createLimitOrderSchema = z.object({
   inputMint: z.string(),
   outputMint: z.string(),
   params: z.object({
@@ -18,7 +18,7 @@ export const createLimitOrderSchema = z.object({
 });
 
 export const createLimitOrder: Action = {
-  name: 'createLimitOrder',
+  name: 'CREATE_LIMIT_ORDER',
   similes: ['place limit order', 'submit limit order', 'create trading order'],
   description: 'Creates and sends a limit order on the Solana blockchain.',
   examples: [

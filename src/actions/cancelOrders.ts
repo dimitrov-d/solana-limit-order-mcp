@@ -7,21 +7,26 @@ import {
 } from '../common/transactions';
 import { CancelOrderRequest } from '../types/types';
 
-export const cancelOrdersSchema = z.object({
+const cancelOrdersSchema = z.object({
   orderPubkeys: z.array(z.string()).optional(),
 });
 
 export const cancelOrders: Action = {
-  name: 'cancelOrders',
-  similes: ['abort orders', 'revoke orders', 'terminate orders'],
+  name: 'CANCEL_ORDERS',
+  similes: [
+    'abort orders',
+    'cancel limit order',
+    'revoke orders',
+    'terminate orders',
+  ],
   description: 'Cancels specified orders on the Solana blockchain.',
   examples: [
     [
       {
         input: {
           orderPubkeys: [
-            'GgMvwcfMzP9AmfwZuMzNienXGBhQa8dksihZvTmyBZYM',
-            'HhNvwcfMzP9AmfwZuMzNienXGBhQa8dksihZvTmyBZYN',
+            'GgMvwcfMz...ienihZvTmyBZYM',
+            'HhNvwcfMz...Qa8ihZvTmyBZYN',
           ],
         },
         output: {

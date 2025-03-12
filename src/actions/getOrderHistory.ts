@@ -3,11 +3,12 @@ import { z } from 'zod';
 import { getOrderHistoryApi } from '../common/jupiterApi';
 
 export const getOrderHistory: Action = {
-  name: 'getOrderHistory',
+  name: 'GET_ORDER_HISTORY',
   similes: [
     'fetch order history',
     'get limit order history',
     'retrieve order history',
+    'get past orders',
   ],
   description: 'Fetches the limit order history for a given wallet.',
   examples: [
