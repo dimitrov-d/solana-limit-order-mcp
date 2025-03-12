@@ -88,7 +88,6 @@ The MCP server provides the following actions:
 * `CANCEL_ORDERS` - Cancels specified orders on Jupiter.
 * `GET_PRICE` - Fetch the current price of a Solana token in USD using Jupiter API.
 * `GET_WALLET_ADDRESS` - Retrieve the wallet address from your private key.
-* `GET_SOL_BALANCE` - Retrieve the SOL balance of your wallet.
 * `GET_TOKEN_BALANCE` - Retrieve any SPL token balance on your wallet.
 * `TRADE_TOKENS` - Trade tokens via Jupiter exchange.
 * `GET_TPS` - Retrieve the current transactions per second (TPS) on the Solana network.
