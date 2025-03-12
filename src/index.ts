@@ -1,53 +1,71 @@
-import { Connection, Keypair } from "@solana/web3.js";
-import bs58 from "bs58";
-import "dotenv/config";
-import { cancelOrders } from "./actions/cancelOrders";
-import { createLimitOrder } from "./actions/createLimitOrder";
-import { getOpenOrders } from "./actions/getOpenOrders";
-import { getOrderHistory } from "./actions/getOrderHistory";
+#!/usr/bin/env node
+import 'dotenv/config';
+import { ACTIONS, SolanaAgentKit, startMcpServer } from 'solana-agent-kit';
+import { createLimitOrder } from './actions/createLimitOrder';
+import fetchPrice from './actions/fetchPrice';
 
 async function main() {
-  const connection = new Connection(process.env.SOLANA_RPC_URL!, "confirmed");
-  const wallet = Keypair.fromSecretKey(
-    bs58.decode(process.env.SOLANA_PRIVATE_KEY!),
+  validateEnvironment();
+
+  const agent = new SolanaAgentKit(
+    process.env.SOLANA_PRIVATE_KEY!,
+    process.env.SOLANA_RPC_URL!,
+    {},
   );
 
+  const mcp_actions = {
+    // Limit Order Actions
+    CREATE_LIMIT_ORDER: createLimitOrder,
+
+    // Solana Agent Kit Actions
+    GET_PRICE: fetchPrice,
+    GET_WALLET_ADDRESS: ACTIONS.WALLET_ADDRESS_ACTION,
+    GET_SOL_BALANCE: ACTIONS.BALANCE_ACTION,
+    GET_TOKEN_BALANCE: ACTIONS.TOKEN_BALANCES_ACTION,
+    TRADE_TOKENS: ACTIONS.TRADE_ACTION,
+    GET_TPS: ACTIONS.GET_TPS_ACTION,
+  };
+
   try {
-    console.log("Attempting to create and send limit order...");
-    const { signature, order, success, error } = await createLimitOrder(
-      connection,
-      wallet,
-    );
-    if (success) {
-      console.log("Order created and sent successfully:");
-      console.log("- Order ID:", order);
-      console.log("- Transaction:", signature);
-      console.log("- Solscan URL:", `https://solscan.io/tx/${signature}/`);
-    } else {
-      console.error("Order creation failed:", error);
-    }
-
-    console.log("\nFetching open orders...");
-    const { orders } = await getOpenOrders(wallet);
-    console.log("Open Orders:", orders);
-
-    if (orders.length > 0) {
-      console.log("\nCanceling first open order...");
-      const orderToCancel = [orders[0].publicKey];
-      const cancelSignatures = await cancelOrders(
-        connection,
-        wallet,
-        orderToCancel,
-      );
-      console.log("Cancel transaction signatures:", cancelSignatures);
-    }
-
-    console.log("\nFetching order history...");
-    const orderHistory = await getOrderHistory(wallet);
-    console.log("Order History:", orderHistory);
+    // Start the MCP server with error handling
+    await startMcpServer(mcp_actions, agent, {
+      name: 'solana-agent',
+      version: '0.0.1',
+    });
   } catch (error) {
-    console.error("Error in main:", error);
+    console.error(
+      'Failed to start MCP server:',
+      error instanceof Error ? error.message : String(error),
+    );
+    process.exit(1);
   }
 }
+
+function validateEnvironment() {
+  const requiredEnvVars = {
+    SOLANA_PRIVATE_KEY: process.env.SOLANA_PRIVATE_KEY,
+    SOLANA_RPC_URL: process.env.SOLANA_RPC_URL,
+  };
+
+  const missingVars = Object.entries(requiredEnvVars)
+    .filter(([_, value]) => !value)
+    .map(([key]) => key);
+
+  if (missingVars.length > 0) {
+    throw new Error(
+      `Missing required environment variables: ${missingVars.join(', ')}`,
+    );
+  }
+}
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
 
 main();
