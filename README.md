@@ -43,9 +43,9 @@ SOLANA_PRIVATE_KEY=your_private_key_here
 SOLANA_RPC_URL=your_rpc_url_here
 ```
 
-### Integration with AI Model
+### Using with Claude
 
-To add this MCP server to your AI model, follow these steps:
+To use this MCP with the Claude LLM, follow these steps:
 
 1. **Install [Claude for Desktop](https://claude.ai/download)**
 
