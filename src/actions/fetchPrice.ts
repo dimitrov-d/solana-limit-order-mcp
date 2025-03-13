@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Action, SolanaAgentKit } from 'solana-agent-kit';
 import { z } from 'zod';
 
-const fetchPriceAction: Action = {
+export const fetchPrice: Action = {
   name: 'FETCH_PRICE',
   similes: [
     'get token price',
@@ -63,5 +63,3 @@ const fetchPriceAction: Action = {
     }
   },
 };
-
-export default fetchPriceAction;

@@ -1,6 +1,6 @@
+import { Action, SolanaAgentKit } from 'solana-agent-kit';
 import { z } from 'zod';
 import { getOpenOrdersApi } from '../common/jupiterApi';
-import { Action, SolanaAgentKit } from 'solana-agent-kit';
 
 export const getOpenOrders: Action = {
   name: 'GET_OPEN_ORDERS',

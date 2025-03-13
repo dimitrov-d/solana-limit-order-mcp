@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import 'dotenv/config';
 import { ACTIONS, SolanaAgentKit, startMcpServer } from 'solana-agent-kit';
-import { createLimitOrder } from './actions/createLimitOrder';
-import fetchPrice from './actions/fetchPrice';
-import { getOpenOrders } from './actions/getOpenOrders';
-import { getOrderHistory } from './actions/getOrderHistory';
-import { cancelOrders } from './actions/cancelOrders';
+import {
+  cancelOrders,
+  createLimitOrder,
+  fetchPrice,
+  getOpenOrders,
+  getOrderHistory,
+} from './actions/';
 
 async function main() {
   validateEnvironment();
@@ -34,7 +36,7 @@ async function main() {
   try {
     // Start the MCP server with error handling
     await startMcpServer(mcp_actions, agent, {
-      name: 'solana-agent',
+      name: 'solana-limit-order-mcp',
       version: '0.0.1',
     });
   } catch (error) {
