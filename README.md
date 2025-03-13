@@ -2,7 +2,9 @@
 
 ## Model Context Protocol (MCP)
 
-A Model Context Protocol (MCP) server that provides a comprehensive suite of tools for AI models, enabling them to interact with various systems through a standardized and unified interface. MCP serves as a bridge between AI agents and external systems, allowing for seamless execution of operations, querying of information, and management of resources. By adhering to the MCP specification, this server ensures that AI agents can perform complex tasks efficiently and reliably, without needing to understand the intricacies of each individual system they interact with. This implementation empowers AI agents to operate in a more autonomous and intelligent manner, enhancing their capabilities and broadening their application scope.
+A Model Context Protocol (MCP) server that provides a comprehensive suite of tools for AI models, enabling them to interact with various systems through a standardized and unified interface. MCP serves as a bridge between AI agents and external systems, allowing for seamless execution of operations, querying of information, and management of resources. 
+
+By adhering to the MCP specification, this server ensures that AI agents can perform complex tasks efficiently and reliably, without needing to understand the intricacies of each individual system they interact with.
 
 ## Overview
 
